@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<title>Pokémon GO Status</title>
+		
+		<link rel="stylesheet" href="css/styles.css">
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,400">
+		
+		<meta name="description" content="Pokémon GO server status checker. Lookup whether and how long the servers are down.">
+		
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary">
+		<meta property="og:title" content="Pokémon Status">
+		<meta property="og:site_name" content="Pokémon Status">
+		<meta property="og:description" content="Pokémon GO server status checker.">
+		<meta property="og:type" content="website">
+		
+		<!-- MOBILE -->
+		<meta name="application-name" content="Pokémon Status">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="container">
+				<h1 class="text-center">Current status of Pokémon GO servers</h1>
+				
+				<div class="text-center">
+					<div id="game" class="span2">
+						<div class="service">
+							<div class="name">Game</div>
+							<h2 class="status">Loading…</h2>
+						</div>
+						<div class="uptime">&nbsp;</div>
+					</div>
+					
+					<div id="australia" class="span2">
+						<div class="service">
+							<div class="name">Australia</div>
+							<h2 class="status">Loading…</h2>
+						</div>
+						<div class="uptime">&nbsp;</div>
+					</div>
+					
+					<div id="germany" class="span2">
+						<div class="service">
+							<div class="name">Germany</div>
+							<h2 class="status">Loading…</h2>
+						</div>
+						<div class="uptime">&nbsp;</div>
+					</div>
+
+					<div id="italy" class="span2">
+						<div class="service">
+							<div class="name">Italy</div>
+							<h2 class="status">Loading…</h2>
+						</div>
+						<div class="uptime">&nbsp;</div>
+					</div>
+
+					<div id="netherlands" class="span2">
+						<div class="service">
+							<div class="name">Netherlands</div>
+							<h2 class="status">Loading…</h2>
+						</div>
+						<div class="uptime">&nbsp;</div>
+					</div>
+
+					<div id="newzealand" class="span2">
+						<div class="service">
+							<div class="name">New Zealand</div>
+							<h2 class="status">Loading…</h2>
+						</div>
+						<div class="uptime">&nbsp;</div>
+					</div>
+
+					<div id="portugal" class="span2">
+						<div class="service">
+							<div class="name">Portugal</div>
+							<h2 class="status">Loading…</h2>
+						</div>
+						<div class="uptime">&nbsp;</div>
+					</div>
+
+					<div id="spain" class="span2">
+						<div class="service">
+							<div class="name">Spain</div>
+							<h2 class="status">Loading…</h2>
+						</div>
+						<div class="uptime">&nbsp;</div>
+					</div>
+
+					<div id="uk" class="span2">
+						<div class="service">
+							<div class="name">United Kingdom</div>
+							<h2 class="status">Loading…</h2>
+						</div>
+						<div class="uptime">&nbsp;</div>
+					</div>
+
+					<div id="us" class="span2">
+						<div class="service">
+							<div class="name">United States</div>
+							<h2 class="status">Loading…</h2>
+						</div>
+						<div class="uptime">&nbsp;</div>
+					</div>
+
+					<div id="other" class="span2">
+						<div class="service">
+							<div class="name">Other Regions</div>
+							<h2 class="status">Loading…</h2>
+						</div>
+						<div class="uptime">&nbsp;</div>
+					</div>
+
+				</div>
+				
+				<noscript>This will not work without JavaScript enabled</noscript>
+				
+				<div id="announcement" class="psa"></div>
+				
+				<div class="footer">
+					<hr class="dotted">
+					
+					<div class="text-center">
+						<div class="footer-line">Created by <a target="_blank" href="//paulvogel.me">Paul Vogel</a> &nbsp; (Original by <a target="_blank" href="//xpaw.me">xPaw</a> &amp; <a target="_blank" href="//theaqua.im">theaqua</a>)</div>
+					</div>
+					
+					<hr class="dotted">
+					
+					<div class="pull-left muted">Last update: <span id="last-update">00:00:00 UTC</span>. Refreshing in <span id="time-to-update" class="light-blue">&infin;</span> seconds.</div>
+					
+					<div class="pull-right muted">
+						<span class="notifications"><a href="#">Enable notifications</a></span>
+					</div>
+					
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+		
+		<script src="assets/jquery.min.js"></script>
+		<script src="assets/status.js"></script>
+	</body>
+</html>
