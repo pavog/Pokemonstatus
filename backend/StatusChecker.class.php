@@ -10,23 +10,16 @@ class StatusChecker {
     const STATUS_PERF_DEGRADATION = 'problem';
 
     private $Report = Array();
-    private $AccessToken = false;
-    private $SelectedProfile;
 
     public function __construct() {
-        $Checks = Array(
-            Array('Name' => 'game', 'Callback' => 'CheckGame', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe'),
-            Array('Name' => 'australia', 'Callback' => 'CheckAustralia', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe'),
-            Array('Name' => 'germany', 'Callback' => 'CheckGermany', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe'),
-            Array('Name' => 'italy', 'Callback' => 'CheckItaly', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe'),
-            Array('Name' => 'netherlands', 'Callback' => 'CheckNetherlands', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe'),
-            Array('Name' => 'newzealand', 'Callback' => 'CheckNewzealand', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe'),
-            Array('Name' => 'portugal', 'Callback' => 'CheckPortugal', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe'),
-            Array('Name' => 'spain', 'Callback' => 'CheckSpain', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe'),
-            Array('Name' => 'uk', 'Callback' => 'CheckUk', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe'),
-            Array('Name' => 'us', 'Callback' => 'CheckUs', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe'),
-            Array('Name' => 'other', 'Callback' => 'CheckOther', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe')
-            );
+        $Checks = Array(Array('Name' => 'game', 'Callback' => 'CheckGame', 'Timeout' => 4, 'URL' => '130.211.14.80'), Array('Name' => 'auth0', 'Callback' => 'CheckAuth0', 'Timeout' => 4, 'URL' => 'sso.pokemon.com'), Array('Name' => 'auth1', 'Callback' => 'CheckAuth1', 'Timeout' => 4, 'URL' => '174.35.46.81'), Array('Name' => 'auth2', 'Callback' => 'CheckAuth2', 'Timeout' => 4, 'URL' => '174.35.46.81'), Array('Name' => 'con1', 'Callback' => 'CheckCon1', 'Timeout' => 4, 'URL' => '54.241.32.23'), Array('Name' => 'con2', 'Callback' => 'CheckCon2', 'Timeout' => 4, 'URL' => 'pgorelease.nianticlabs.com'), //Array('Name' => 'australia', 'Callback' => 'CheckAustralia', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe'),
+            Array('Name' => 'germany', 'Callback' => 'CheckGermany', 'Timeout' => 4, 'URL' => '119.81.248.44'), //Array('Name' => 'italy', 'Callback' => 'CheckItaly', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe'),
+            //Array('Name' => 'netherlands', 'Callback' => 'CheckNetherlands', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe'),
+            //Array('Name' => 'newzealand', 'Callback' => 'CheckNewzealand', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe'),
+            //Array('Name' => 'portugal', 'Callback' => 'CheckPortugal', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe'),
+            //Array('Name' => 'spain', 'Callback' => 'CheckSpain', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe'),
+            Array('Name' => 'uk', 'Callback' => 'CheckUK', 'Timeout' => 4, 'URL' => '37.58.73.184'), Array('Name' => 'us', 'Callback' => 'CheckUS', 'Timeout' => 4, 'URL' => '74.125.136.95'), Array('Name' => 'na', 'Callback' => 'CheckNA', 'Timeout' => 4, 'URL' => '130.211.188.132'),//Array('Name' => 'other', 'Callback' => 'CheckOther', 'Timeout' => 4, 'URL' => 'https://pgorelease.nianticlabs.com/plfe')
+        );
 
         $Requests = Array();
         $Master = cURL_Multi_Init();
@@ -75,13 +68,27 @@ class StatusChecker {
 
                 //cURL_Multi_Remove_Handle( $Master, $Slave );
 
-                if ($Name === 'news') {
-                    HandleNews($Data, isset($Done['error']) ? 0 : $Code);
-                } else if (isset($Done['error'])) {
+                if (isset($Done['error'])) {
                     $this->Report[$Name] = Array('status' => self::STATUS_OFFLINE, 'title' => 'cURL Error' // $Done[ 'error' ]
                     );
                 } else if ($Code === 0) {
                     $this->Report[$Name] = Array('status' => self::STATUS_OFFLINE, 'title' => 'Timed Out');
+                } else if (($Name === 'game') && $Code == 404) {
+                    if (strlen($Data) > 10) {
+                        $this->Report[$Name] = Array('status' => self::STATUS_ONLINE, 'title' => 'Online');
+                    }
+                } else if (($Name === 'auth1' || $Name === 'auth2') && $Code == 403) {
+                    if (strlen($Data) > 10) {
+                        $this->Report[$Name] = Array('status' => self::STATUS_ONLINE, 'title' => 'Online');
+                    }
+                } else if ($Name === 'con2' && $Code == 404) {
+                    if (strlen($Data) > 10) {
+                        $this->Report[$Name] = Array('status' => self::STATUS_ONLINE, 'title' => 'Online');
+                    }
+                } else if ($Name === 'na' && $Code == 404) {
+                    if (strlen($Data) > 10) {
+                        $this->Report[$Name] = Array('status' => self::STATUS_ONLINE, 'title' => 'Online');
+                    }
                 } else if ($Code !== ($Name === 'realms' ? 401 : 200)) {
                     $Set = false;
 
@@ -118,27 +125,6 @@ class StatusChecker {
                     }
                 }
 
-                /*if( $this->SessionID !== false )
-                {
-                    echo 'Got it ' . $Name . PHP_EOL;
-
-                    $SlaveNew = $this->CreateSlave( 'https://sessionserver.mojang.com/session/minecraft/join', 3 );
-
-                    cURL_SetOpt_Array( $SlaveNew, Array(
-                        CURLOPT_POST       => true,
-                        CURLOPT_POSTFIELDS => '{"accessToken":"' . $this->SessionID . '"}',
-                        CURLOPT_HTTPHEADER => Array( 'Content-Type: application/json' )
-                    ) );
-
-                    $this->SessionID = false;
-
-                    $Requests[ (int)$SlaveNew ] = Array( 'Name' => 'session_auth', 'Callback' => 'CheckSessionReal' );
-
-                    cURL_Multi_Add_Handle( $Master, $SlaveNew );
-
-                    unset( $SlaveNew );
-                }*/
-
                 cURL_Multi_Remove_Handle($Master, $Slave);
                 cURL_Close($Slave);
 
@@ -151,37 +137,6 @@ class StatusChecker {
         } while ($Running);
 
         cURL_Multi_Close($Master);
-
-        /*
-        if ($this->AccessToken !== false) {
-            $Slave = $this->CreateSlave('https://sessionserver.mojang.com/session/minecraft/join', 3);
-
-            cURL_SetOpt_Array($Slave, Array(CURLOPT_POST => true, CURLOPT_POSTFIELDS => '{"accessToken":"' . $this->AccessToken . '","selectedProfile":"' . $this->SelectedProfile . '","serverId":0}', CURLOPT_HTTPHEADER => Array('Content-Type: application/json')));
-
-            $Data = cURL_Exec($Slave);
-            $Code = cURL_GetInfo($Slave, CURLINFO_HTTP_CODE);
-
-            cURL_Close($Slave);
-
-            if ($Code !== 0 && $Code !== 200) {
-                $Data = JSON_Decode($Data, true);
-
-                if (JSON_Last_Error() === JSON_ERROR_NONE && Is_Array($Data) && Array_Key_Exists('error', $Data)) {
-                    $Set = $Data['error'];
-
-                    if (StrLen($Set) > 23) {
-                        $Set = SubStr($Set, 0, 23) . '...';
-                    }
-
-                    $this->Report['session'] = Array('status' => self::STATUS_OFFLINE, 'title' => $Set);
-                }
-            }
-        }
-        */
-    }
-
-    public function GetReport() {
-        return $this->Report;
     }
 
     private static function CreateSlave($URL, $Timeout) {
@@ -192,47 +147,85 @@ class StatusChecker {
         return $Slave;
     }
 
-    private function CheckLogin($Data) {
-        $Data = JSON_Decode($Data, true);
-
-        if (JSON_Last_Error() !== JSON_ERROR_NONE || !Array_Key_Exists('accessToken', $Data)) {
-            return false;
-        }
-
-        if (!Array_Key_Exists('selectedProfile', $Data)) {
-            return false;
-        }
-
-        $this->AccessToken = $Data['accessToken'];
-        $this->SelectedProfile = $Data['selectedProfile']['id'];
-
-        return true;
-    }
-
-    private function CheckRealms($Data) {
-        return true;
-        //return $Data === 'Invalid session id';
-    }
-
-    private function CheckSession($Data) {
-        $Data = JSON_Decode($Data, true);
-
-        if (JSON_Last_Error() !== JSON_ERROR_NONE || !Array_Key_Exists('Status', $Data)) {
-            return false;
-        }
-
-        return $Data['Status'] === 'OK';
-    }
-
-    private function CheckWebsite($Data) {
-        return StrLen($Data) > 1000 && StrPos($Data, 'is a trademark of') !== false;
-    }
-
-    private function CheckSkins($Data) {
-        return MD5($Data) === '2041a4dc31f673cf32ca944f6ef460fc';
+    public function GetReport() {
+        return $this->Report;
     }
 
     private function CheckGame($Data) {
         return StrLen($Data) > 10;
+    }
+
+    private function CheckAuth0($Data) {
+        return StrLen($Data) > 10;
+        return true;
+    }
+
+    private function CheckAuth1($Data) {
+        return StrLen($Data) > 10;
+        return true;
+    }
+
+    private function CheckAuth2($Data) {
+        return StrLen($Data) > 10;
+        return true;
+    }
+
+    private function CheckCon1($Data) {
+        return true;
+    }
+
+    private function CheckCon2($Data) {
+        return StrLen($Data) > 10;
+        return true;
+    }
+
+    private function CheckAustralia($Data) {
+        return true;
+    }
+
+    private function CheckGermany($Data) {
+        return true;
+    }
+
+    private function CheckItaly($Data) {
+        return true;
+    }
+
+    private function CheckNetherlands($Data) {
+        return true;
+    }
+
+    private function CheckNewzealand($Data) {
+        return true;
+    }
+
+    private function CheckPortugal($Data) {
+        return true;
+    }
+
+    private function CheckSpain($Data) {
+        return true;
+    }
+
+    private function CheckUK($Data) {
+        return true;
+    }
+
+    private function CheckUS($Data) {
+        return true;
+    }
+
+    private function CheckNA($Data) {
+        return StrLen($Data) > 10;
+        return true;
+    }
+
+    private function CheckOther($Data) {
+        return true;
+    }
+
+
+    private function PingServer($ip) {
+        return fsockopen($ip, 80, $errno, $errstr, 10);
     }
 }

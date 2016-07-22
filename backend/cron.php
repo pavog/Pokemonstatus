@@ -1,7 +1,4 @@
 <?php
-/*
- * Main reporting code
- */
 
 $m = new Memcached();
 $m->addServer('127.0.0.1', 11211);
@@ -31,37 +28,36 @@ fwrite($myfile, JSON_Encode($Answer));
 
 unset($Downs, $Report, $Service, $Answer);
 
+
 /*
  * Downtime reporting
  */
 
 $ProperNames = Array(
-    'game'   => 'Game',
+    'game'   => 'Game', 'auth0' => 'Auth 1', 'auth1' => 'Auth 2', 'auth2' => 'Auth 3', 'con1' => 'Connection 1', 'con2' => 'Connection 2',
     'australia' => 'Australia',
     'germany' => 'Germany',
     'italy'   => 'Italy',
-    'netherlands'  => 'Netherlands',
     'netherlands'  => 'Netherlands',
     'newzealand'  => 'New Zealand',
     'portugal'  => 'Portugal',
     'spain'  => 'Spain',
     'uk'  => 'United Kingdom',
-    'us'  => 'United States',
+    'us'  => 'United States', 'na' => 'North America',
     'other'  => 'Other Regions'
 );
 
 $ProperNameAdj = Array(
-    'game'   => 'is',
+    'game'   => 'is', 'auth0' => 'is', 'auth1' => 'is', 'auth2' => 'is', 'con1' => 'is', 'con2' => 'is',
     'australia' => 'is',
     'germany' => 'is',
     'italy'   => 'is',
-    'netherlands'  => 'is',
     'netherlands'  => 'is',
     'newzealand'  => 'is',
     'portugal'  => 'is',
     'spain'  => 'is',
     'uk'  => 'is',
-    'us'  => 'is',
+    'us'  => 'is', 'na' => 'is',
     'other'  => 'are'
 );
 

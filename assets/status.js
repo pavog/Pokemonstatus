@@ -19,11 +19,14 @@
         prevCheckDown = false,
         loadState = 0,
 
-        // game, australia, germany, italy, netherlands, newzealand, portugal, spain, uk, us, other
-
         statusElements =
         {
             game: $('#game'),
+            auth0: $('#auth0'),
+            auth1: $('#auth1'),
+            auth2: $('#auth2'),
+            con1: $('#con1'),
+            con2: $('#con2'),
             australia: $('#australia'),
             germany: $('#germany'),
             italy: $('#italy'),
@@ -33,6 +36,7 @@
             spain: $('#spain'),
             uk: $('#uk'),
             us: $('#us'),
+            na: $('#na'),
             other: $('#other')
         },
 
@@ -41,7 +45,7 @@
                 secondsToUpdate = 31;
 
                 $.ajax({
-                    url: 'status.json',
+                    url: 'http://pokemonstat.us/backend/status.json',
                     dataType: 'json',
                     error: handleError,
                     success: updateStatus
